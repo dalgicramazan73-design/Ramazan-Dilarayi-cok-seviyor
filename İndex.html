@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seni Seviyorum ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-width: 350px;
+      animation: pop 1s ease;
+    }
+    @keyframes pop {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    img {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 15px;
+    }
+    h1 {
+      color: #e63946;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 18px;
+      color: #333;
+    }
+    .heart {
+      font-size: 30px;
+      animation: beat 1s infinite;
+    }
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <audio autoplay loop controls style="width:100%; margin-bottom:10px">
+      <source src="MUZIK_LINKI_BURAYA" type="audio/mpeg" />
+    </audio>
+  <div class="card">
+    <!-- Fotoğraf linkini buraya ekle -->
+    <img src="https://r.resimlink.com/zS4KXNsE.jpg" alt="Biz" />
+    <h1>Seni Çok Seviyorum</h1>
+    <p id="quote"></p>
+    <p style="font-size:16px">
+      Seninle her an daha güzel, her gün daha anlamlı 💕<br />
+      Gülüşün kalbimin en sevdiği yerinde.<br />
+      İyi ki varsın, iyi ki benimlesin.
+    </p>
+    <div class="heart">❤️</div>
+  </div>  <script>
+    // Konfeti
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    function resize(){canvas.width = window.innerWidth; canvas.height = window.innerHeight}
+    resize(); window.addEventListener('resize', resize);
+    const pieces = [];
+    const colors = ['#e63946', '#f1faee', '#a8dadc', '#457b9d', '#ffb703'];
+    for (let i = 0; i < 180; i++) pieces.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,size:Math.random()*8+4,speed:Math.random()*3+2,color:colors[Math.floor(Math.random()*colors.length)]});
+    (function update(){ctx.clearRect(0,0,canvas.width,canvas.height); pieces.forEach(p=>{p.y+=p.speed; if(p.y>canvas.height)p.y=-10; ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.size,p.size)}); requestAnimationFrame(update)})();
+
+    // Uçan kalpler
+    const hearts = [];
+    function spawnHeart(){hearts.push({x:Math.random()*window.innerWidth,y:window.innerHeight+20,vy:Math.random()*1.5+0.5,size:Math.random()*18+10,alpha:1})}
+    setInterval(spawnHeart, 400);
+    (function drawHearts(){ctx.save(); hearts.forEach((h,i)=>{h.y-=h.vy; h.alpha-=0.003; ctx.globalAlpha=Math.max(h.alpha,0); ctx.font=`${h.size}px serif`; ctx.fillText('❤️',h.x,h.y); if(h.alpha<=0) hearts.splice(i,1)}); ctx.restore(); requestAnimationFrame(drawHearts)})();
+
+    // Sevgi sözleri
+    const quotes = [
+      'Seni sevmek, her gün yeniden gülümsemek demek 💖',
+      'Kalbim seninle evini buldu 🏡❤️',
+      'Yanımdayken dünya daha güzel 🌍✨',
+      'Gözlerin en sevdiğim manzara 👀💕',
+      'Birlikteyken zaman duruyor ⏳❤️',
+      'Sonsuza kadar biz 💞'
+    ];
+    let qi = 0; const q = document.getElementById('quote');
+    q.style.fontSize='20px'; q.style.marginBottom='10px'; q.style.color='#333';
+    function rotate(){ q.style.opacity=0; setTimeout(()=>{q.textContent=quotes[qi++%quotes.length]; q.style.opacity=1},400)}
+    rotate(); setInterval(rotate, 2500);
+  </script></body>
+</html>
